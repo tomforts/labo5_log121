@@ -1,0 +1,52 @@
+package org.example.labo5;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
+
+public class MouseController extends MouseAdapter implements ViewController {
+
+    private int lastX;
+    private int lastY;
+
+    @Override
+    public void handleZoom(PerspectiveView view, double delta) {
+        Perspective perspective = view.getPerspective();
+        Command cmd = new ZoomCommand(perspective, delta);
+        CommandManager.getInstance().executeCommand(cmd);
+    }
+
+    @Override
+    public void handleTranslation(PerspectiveView view, int dx, int dy, int extra) {
+        Perspective perspective = view.getPerspective();
+        Command cmd = new TranslateCommand(perspective, dx, dy);
+        CommandManager.getInstance().executeCommand(cmd);
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        lastX = e.getX();
+        lastY = e.getY();
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        if (e.getSource() instanceof PerspectiveView) {
+            PerspectiveView view = (PerspectiveView) e.getSource();
+            int dx = e.getX() - lastX;
+            int dy = e.getY() - lastY;
+            handleTranslation(view, dx, dy, 0);
+            lastX = e.getX();
+            lastY = e.getY();
+        }
+    }
+
+    @Override
+    public void mouseWheelMoved(MouseWheelEvent e) {
+        if (e.getSource() instanceof PerspectiveView) {
+            PerspectiveView view = (PerspectiveView) e.getSource();
+            double delta = (e.getWheelRotation() < 0) ? 1.1 : 0.9;
+            handleZoom(view, delta);
+        }
+    }
+}
