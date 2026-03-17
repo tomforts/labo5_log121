@@ -2,16 +2,28 @@ package org.example.labo5;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class MenuController implements ViewController, ActionListener {
 
     private SaveFileManager saveFileManager;
+    private ImageDocument imageDocument;
 
-    public static final String ACTION_SAVE = "save";
-    public static final String ACTION_UNDO = "undo";
+    public static final String ACTION_SAVE         = "save";
+    public static final String ACTION_UNDO         = "undo";
+    public static final String ACTION_LOAD_IMAGE   = "loadImage";
+    public static final String ACTION_LOAD_DOCUMENT = "loadDocument";
 
     public MenuController(SaveFileManager saveFileManager) {
         this.saveFileManager = saveFileManager;
+    }
+
+    public void setImageDocument(ImageDocument imageDocument) {
+        this.imageDocument = imageDocument;
+    }
+
+    public ImageDocument getImageDocument() {
+        return imageDocument;
     }
 
     @Override
@@ -32,12 +44,36 @@ public class MenuController implements ViewController, ActionListener {
         CommandManager.getInstance().undoLastCommand();
     }
 
-    public void saveProjectState(ImageDocument imageDocument, String filePath) {
-        saveFileManager.save(imageDocument, filePath);
+    public ImageDocument onLoadImage() {
+        try {
+            imageDocument = saveFileManager.loadImage();
+            return imageDocument;
+        } catch (IOException e) {
+            System.err.println("Erreur lors du chargement de l'image : " + e.getMessage());
+            return null;
+        }
     }
 
-    public ImageDocument loadProjectState(String filePath) {
-        return saveFileManager.load(filePath);
+    public ImageDocument onLoadDocument() {
+        try {
+            imageDocument = saveFileManager.loadImageDocument();
+            return imageDocument;
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println("Erreur lors du chargement du document : " + e.getMessage());
+            return null;
+        }
+    }
+
+    public void onSave() {
+        if (imageDocument == null) {
+            System.err.println("Aucun document à sauvegarder.");
+            return;
+        }
+        try {
+            saveFileManager.saveImageDocument(imageDocument);
+        } catch (IOException e) {
+            System.err.println("Erreur lors de la sauvegarde : " + e.getMessage());
+        }
     }
 
     @Override
@@ -47,6 +83,13 @@ public class MenuController implements ViewController, ActionListener {
                 onUndo();
                 break;
             case ACTION_SAVE:
+                onSave();
+                break;
+            case ACTION_LOAD_IMAGE:
+                onLoadImage();
+                break;
+            case ACTION_LOAD_DOCUMENT:
+                onLoadDocument();
                 break;
         }
     }
