@@ -11,6 +11,7 @@ public class MouseController extends MouseAdapter implements ViewController {
 
     @Override
     public void handleZoom(PerspectiveView view, double delta) {
+        if (view == null || view.getPerspective() == null) return;
         Perspective perspective = view.getPerspective();
         Command cmd = new ZoomCommand(perspective, delta);
         CommandManager.getInstance().executeCommand(cmd);
@@ -18,6 +19,7 @@ public class MouseController extends MouseAdapter implements ViewController {
 
     @Override
     public void handleTranslation(PerspectiveView view, int dx, int dy, int extra) {
+        if (view == null || view.getPerspective() == null) return;
         Perspective perspective = view.getPerspective();
         Command cmd = new TranslateCommand(perspective, dx, dy);
         CommandManager.getInstance().executeCommand(cmd);
@@ -45,7 +47,7 @@ public class MouseController extends MouseAdapter implements ViewController {
     public void mouseWheelMoved(MouseWheelEvent e) {
         if (e.getSource() instanceof PerspectiveView) {
             PerspectiveView view = (PerspectiveView) e.getSource();
-            double delta = (e.getWheelRotation() < 0) ? 1.1 : 0.9;
+            double delta = (e.getWheelRotation() < 0) ? 0.1 : -0.1;
             handleZoom(view, delta);
         }
     }

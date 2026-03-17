@@ -28,6 +28,7 @@ public class MenuController implements ViewController, ActionListener {
 
     @Override
     public void handleZoom(PerspectiveView view, double delta) {
+        if (view == null || view.getPerspective() == null) return;
         Perspective perspective = view.getPerspective();
         Command cmd = new ZoomCommand(perspective, delta);
         CommandManager.getInstance().executeCommand(cmd);
@@ -35,6 +36,7 @@ public class MenuController implements ViewController, ActionListener {
 
     @Override
     public void handleTranslation(PerspectiveView view, int dx, int dy, int extra) {
+        if (view == null || view.getPerspective() == null) return;
         Perspective perspective = view.getPerspective();
         Command cmd = new TranslateCommand(perspective, dx, dy);
         CommandManager.getInstance().executeCommand(cmd);
@@ -65,7 +67,7 @@ public class MenuController implements ViewController, ActionListener {
     }
 
     public void onSave() {
-        if (imageDocument == null) {
+        if (saveFileManager == null || imageDocument == null) {
             System.err.println("Aucun document à sauvegarder.");
             return;
         }
