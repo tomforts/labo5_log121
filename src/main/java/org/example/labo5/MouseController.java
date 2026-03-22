@@ -42,6 +42,11 @@ public class MouseController extends MouseAdapter implements ViewController {
             PerspectiveView view = (PerspectiveView) e.getSource();
             int dx = e.getX() - lastX;
             int dy = e.getY() - lastY;
+            double zoom = view.getPerspective() != null ? view.getPerspective().getZoomFactor() : 1.0;
+            if (zoom > 1) {
+                dx = (int) Math.round(dx / zoom);
+                dy = (int) Math.round(dy / zoom);
+            }
             controller.handleTranslation(view, -dx, -dy);
             lastX = e.getX();
             lastY = e.getY();
