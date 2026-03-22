@@ -25,13 +25,6 @@ public class PerspectiveView extends JPanel implements Observer {
         if (this.perspective != null) {
             this.perspective.attach(this);
         }
-
-        if (this.controller != null) {
-            MouseController mouseController = new MouseController(this.controller);
-            addMouseListener(mouseController);
-            addMouseMotionListener(mouseController);
-            addMouseWheelListener(mouseController);
-        }
     }
 
     public String getViewName() {
@@ -62,7 +55,6 @@ public class PerspectiveView extends JPanel implements Observer {
     public void renderPerspective() {
         repaint();
     }
-
 
     @Override
     protected void paintComponent(Graphics g) {

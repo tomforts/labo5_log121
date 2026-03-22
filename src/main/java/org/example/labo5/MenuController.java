@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
-public class MenuController implements ViewController, ActionListener {
+public class MenuController implements ActionListener {
 
     private SaveFileManager saveFileManager;
     private ImageDocument imageDocument;
@@ -24,20 +24,6 @@ public class MenuController implements ViewController, ActionListener {
 
     public ImageDocument getImageDocument() {
         return imageDocument;
-    }
-
-    @Override
-    public void handleZoom(PerspectiveView view, double delta) {
-        if (view == null || view.getPerspective() == null) return;
-        Command cmd = new ZoomCommand(view.getPerspective(), delta);
-        CommandManager.getInstance().executeCommand(cmd);
-    }
-
-    @Override
-    public void handleTranslation(PerspectiveView view, int dx, int dy) {
-        if (view == null || view.getPerspective() == null) return;
-        Command cmd = new TranslateCommand(view.getPerspective(), dx, dy);
-        CommandManager.getInstance().executeCommand(cmd);
     }
 
     public void onUndo() {
@@ -64,7 +50,7 @@ public class MenuController implements ViewController, ActionListener {
         }
     }
 
-    public void onSave() throws IOException{
+    public void onSave() throws IOException {
         if (imageDocument == null) {
             throw new IOException("Aucun document à sauvegarder.");
         }
@@ -72,7 +58,7 @@ public class MenuController implements ViewController, ActionListener {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e){
+    public void actionPerformed(ActionEvent e) {
         try {
             switch (e.getActionCommand()) {
                 case ACTION_UNDO:

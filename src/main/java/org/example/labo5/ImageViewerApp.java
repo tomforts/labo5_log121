@@ -3,7 +3,6 @@ package org.example.labo5;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.io.IOException;
 
 public class ImageViewerApp extends JFrame {
 
@@ -15,24 +14,22 @@ public class ImageViewerApp extends JFrame {
     private final JPanel imagePanel;
     private final JPanel perspective1Panel;
     private final JPanel perspective2Panel;
-    //private final JLabel instructionsLabel;
 
-    private ImageDocument imageDocument;
-    private final SaveFileManager saveFileManager;
     private final MenuController menuController;
+    private final MouseController mouseController;
 
     public ImageViewerApp() {
-        saveFileManager = new SaveFileManager(this);
-        menuController = new MenuController(saveFileManager);
+        menuController  = new MenuController(new SaveFileManager(this));
+        mouseController = new MouseController();
 
         setTitle("LOG121 - Labo 5");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout(10, 10));
 
-        loadImageButton = new JButton("Charger image");
+        loadImageButton    = new JButton("Charger image");
         loadDocumentButton = new JButton("Charger document");
         saveDocumentButton = new JButton("Sauvegarder document");
-        undoButton = new JButton("Undo");
+        undoButton         = new JButton("Undo");
 
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         topPanel.add(loadImageButton);
@@ -40,9 +37,7 @@ public class ImageViewerApp extends JFrame {
         topPanel.add(saveDocumentButton);
         topPanel.add(undoButton);
 
-        //instructionsLabel = new JLabel("Molette = zoom, glisser = déplacer la perspective quand le zoom est > 1.");
-
-        imagePanel = createImageContainer("Image originale");
+        imagePanel        = createImageContainer("Image originale");
         perspective1Panel = createImageContainer("Perspective 1");
         perspective2Panel = createImageContainer("Perspective 2");
 
@@ -55,7 +50,6 @@ public class ImageViewerApp extends JFrame {
         wrapper.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         wrapper.add(topPanel, BorderLayout.NORTH);
         wrapper.add(centerPanel, BorderLayout.CENTER);
-        //wrapper.add(instructionsLabel, BorderLayout.SOUTH);
 
         add(wrapper, BorderLayout.CENTER);
 
@@ -71,7 +65,7 @@ public class ImageViewerApp extends JFrame {
         loadImageButton.addActionListener(e -> loadImageDocumentFromImage());
         loadDocumentButton.addActionListener(e -> loadImageDocument());
         saveDocumentButton.addActionListener(e -> saveImageDocument());
-        undoButton.addActionListener(e -> undoLastCommand());
+        undoButton.addActionListener(e -> menuController.onUndo());
     }
 
     private JPanel createImageContainer(String title) {
@@ -106,10 +100,16 @@ public class ImageViewerApp extends JFrame {
         panel.repaint();
     }
 
-    private void installDocument(ImageDocument document) {
-        imageDocument = document;
-        menuController.setImageDocument(document);
+    private PerspectiveView createPerspectiveView(String name, Image image, Perspective perspective) {
+        PerspectiveView view = new PerspectiveView(name, image, perspective, mouseController);
+        view.addMouseListener(mouseController);
+        view.addMouseMotionListener(mouseController);
+        view.addMouseWheelListener(mouseController);
+        return view;
+    }
 
+    private void installDocument() {
+        ImageDocument document = menuController.getImageDocument();
         if (document == null || document.getImage() == null) {
             installEmptyState();
             return;
@@ -117,82 +117,50 @@ public class ImageViewerApp extends JFrame {
 
         setPanelContent(imagePanel, new ImageView(document.getImage()));
 
-        Perspective perspective1 = document.getPerspectives().get(0);
-        Perspective perspective2 = document.getPerspectives().get(1);
+        Perspective p1 = document.getPerspectives().get(0);
+        Perspective p2 = document.getPerspectives().get(1);
 
-        setPanelContent(
-                perspective1Panel,
-                new PerspectiveView("Perspective 1", document.getImage(), perspective1, menuController)
-        );
-        setPanelContent(
-                perspective2Panel,
-                new PerspectiveView("Perspective 2", document.getImage(), perspective2, menuController)
-        );
+        setPanelContent(perspective1Panel, createPerspectiveView("Perspective 1", document.getImage(), p1));
+        setPanelContent(perspective2Panel, createPerspectiveView("Perspective 2", document.getImage(), p2));
     }
 
     private void loadImageDocumentFromImage() {
         try {
-            ImageDocument loadedDocument = menuController.onLoadImage();
-            if (loadedDocument != null) {
-                installDocument(loadedDocument);
-            }
+            if (menuController.onLoadImage() != null) installDocument();
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(
-                    this,
+            JOptionPane.showMessageDialog(this,
                     "Erreur lors du chargement de l'image : " + ex.getMessage(),
-                    "Erreur",
-                    JOptionPane.ERROR_MESSAGE
-            );
+                    "Erreur", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     private void loadImageDocument() {
         try {
-            ImageDocument loadedDocument = menuController.onLoadDocument();
-            if (loadedDocument != null) {
-                installDocument(loadedDocument);
-            }
+            if (menuController.onLoadDocument() != null) installDocument();
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(
-                    this,
+            JOptionPane.showMessageDialog(this,
                     "Erreur lors du chargement du document : " + ex.getMessage(),
-                    "Erreur",
-                    JOptionPane.ERROR_MESSAGE
-            );
+                    "Erreur", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     private void saveImageDocument() {
-        if (imageDocument == null) {
-            JOptionPane.showMessageDialog(
-                    this,
+        if (menuController.getImageDocument() == null) {
+            JOptionPane.showMessageDialog(this,
                     "Aucun document à sauvegarder.",
-                    "Sauvegarde",
-                    JOptionPane.WARNING_MESSAGE
-            );
+                    "Sauvegarde", JOptionPane.WARNING_MESSAGE);
             return;
         }
-
         try {
             menuController.onSave();
-            JOptionPane.showMessageDialog(
-                    this,
+            JOptionPane.showMessageDialog(this,
                     "Document sauvegardé avec succès.",
-                    "Sauvegarde",
-                    JOptionPane.INFORMATION_MESSAGE
-            );
+                    "Sauvegarde", JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(
-                    this,
+            JOptionPane.showMessageDialog(this,
                     "Erreur lors de la sauvegarde : " + ex.getMessage(),
-                    "Erreur",
-                    JOptionPane.ERROR_MESSAGE
-            );
+                    "Erreur", JOptionPane.ERROR_MESSAGE);
         }
-    }
-
-    private void undoLastCommand() {
-        menuController.onUndo();
     }
 
     public static void main(String[] args) {

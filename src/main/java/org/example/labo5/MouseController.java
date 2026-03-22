@@ -8,25 +8,18 @@ public class MouseController extends MouseAdapter implements ViewController {
 
     private int lastX;
     private int lastY;
-    private ViewController controller;
-
-    public MouseController(ViewController viewController) {
-        this.controller = viewController;
-    }
 
     @Override
     public void handleZoom(PerspectiveView view, double delta) {
         if (view == null || view.getPerspective() == null) return;
-        Perspective perspective = view.getPerspective();
-        Command cmd = new ZoomCommand(perspective, delta);
+        Command cmd = new ZoomCommand(view.getPerspective(), delta);
         CommandManager.getInstance().executeCommand(cmd);
     }
 
     @Override
     public void handleTranslation(PerspectiveView view, int dx, int dy) {
         if (view == null || view.getPerspective() == null) return;
-        Perspective perspective = view.getPerspective();
-        Command cmd = new TranslateCommand(perspective, dx, dy);
+        Command cmd = new TranslateCommand(view.getPerspective(), dx, dy);
         CommandManager.getInstance().executeCommand(cmd);
     }
 
@@ -47,7 +40,7 @@ public class MouseController extends MouseAdapter implements ViewController {
                 dx = (int) Math.round(dx / zoom);
                 dy = (int) Math.round(dy / zoom);
             }
-            controller.handleTranslation(view, -dx, -dy);
+            handleTranslation(view, -dx, -dy);
             lastX = e.getX();
             lastY = e.getY();
         }
@@ -58,7 +51,7 @@ public class MouseController extends MouseAdapter implements ViewController {
         if (e.getSource() instanceof PerspectiveView) {
             PerspectiveView view = (PerspectiveView) e.getSource();
             double delta = (e.getWheelRotation() < 0) ? 0.1 : -0.1;
-            controller.handleZoom(view, delta);
+            handleZoom(view, delta);
         }
     }
 }
