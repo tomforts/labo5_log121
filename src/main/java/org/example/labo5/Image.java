@@ -29,6 +29,7 @@ public class Image extends Subject implements java.io.Serializable{
 
         this.width = bufferedImage.getWidth();
         this.height = bufferedImage.getHeight();
+        notifyObservers();
     }
 
     public void changeImage(String path) throws IOException {
@@ -43,12 +44,17 @@ public class Image extends Subject implements java.io.Serializable{
         if (bufferedImage == null && imagePath != null) {
             try {
                 bufferedImage = ImageIO.read(new File(imagePath));
+                if (bufferedImage != null) {
+                    width = bufferedImage.getWidth();
+                    height = bufferedImage.getHeight();
+                }
             } catch (IOException e) {
                 return null;
             }
         }
         return bufferedImage;
     }
+
 
     public int getWidth() {
         return width;

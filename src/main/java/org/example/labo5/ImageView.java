@@ -10,7 +10,10 @@ public class ImageView extends JPanel implements Observer {
 
     public ImageView(Image image) {
         this.image = image;
-        image.attach(this);
+        setBackground(Color.WHITE);
+        if (this.image != null) {
+            this.image.attach(this);
+        }
     }
 
     @Override
@@ -21,7 +24,9 @@ public class ImageView extends JPanel implements Observer {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-
+        if (image == null) {
+            return;
+        }
         BufferedImage img = image.getBufferedImage();
         if (img != null) {
             g.drawImage(img, 0, 0, getWidth(), getHeight(), null);

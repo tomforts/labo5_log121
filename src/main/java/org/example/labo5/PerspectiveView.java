@@ -17,8 +17,20 @@ public class PerspectiveView extends JPanel implements Observer {
         this.perspective = perspective;
         this.controller = controller;
 
+        setBackground(Color.WHITE);
+
+        if (this.image != null) {
+            this.image.attach(this);
+        }
         if (this.perspective != null) {
             this.perspective.attach(this);
+        }
+
+        if (this.controller != null) {
+            MouseController mouseController = new MouseController(this.controller);
+            addMouseListener(mouseController);
+            addMouseMotionListener(mouseController);
+            addMouseWheelListener(mouseController);
         }
     }
 
@@ -51,6 +63,7 @@ public class PerspectiveView extends JPanel implements Observer {
         repaint();
     }
 
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -63,6 +76,7 @@ public class PerspectiveView extends JPanel implements Observer {
         if (source == null) {
             return;
         }
+        perspective.setViewportSize(getWidth(), getHeight());
 
         double zoom = perspective.getZoomFactor();
         if (zoom <= 0) {

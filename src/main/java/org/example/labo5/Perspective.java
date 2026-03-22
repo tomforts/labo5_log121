@@ -9,6 +9,7 @@ import java.io.*;
 public class Perspective extends Subject implements java.io.Serializable{
     @Serial
     private static final long serialVersionUID = 1L;
+    private static final double MIN_ZOOM = 0.1;
 
     private String id;
     private double zoomFactor;
@@ -27,27 +28,25 @@ public class Perspective extends Subject implements java.io.Serializable{
     }
 
     public void zoom(double delta) {
-        zoomFactor += delta;
-        if (zoomFactor < 0.1) {
-            zoomFactor = 0.1;
-        }
+        setZoomFactor(zoomFactor + delta);
     }
 
     public void translate(int dx, int dy) {
         if (zoomFactor <= 1.0) {
             return;
         }
-        offsetX += dx;
-        offsetY += dy;
+        setOffsets(offsetX + dx, offsetY + dy);
     }
 
     public void setZoomFactor(double zoomFactor) {
-        this.zoomFactor = zoomFactor;
+        this.zoomFactor = Math.max(MIN_ZOOM, zoomFactor);
+        notifyObservers();
     }
 
     public void setOffsets(int x, int y) {
         this.offsetX = x;
         this.offsetY = y;
+        notifyObservers();
     }
 
     public double getZoomFactor() {
@@ -68,6 +67,11 @@ public class Perspective extends Subject implements java.io.Serializable{
 
     public int getViewportHeight() {
         return viewportHeight;
+    }
+
+    public void setViewportSize(int viewportWidth, int viewportHeight) {
+        this.viewportWidth = viewportWidth;
+        this.viewportHeight = viewportHeight;
     }
 
     public String getId() {
