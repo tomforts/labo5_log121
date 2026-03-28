@@ -1,5 +1,8 @@
 package org.example.labo5;
 
+import org.example.labo5.model.Image;
+import org.example.labo5.model.ImageDocument;
+import org.example.labo5.util.SaveFileManager;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;

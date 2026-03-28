@@ -1,5 +1,6 @@
 package org.example.labo5;
 
+import org.example.labo5.observer.Subject;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
