@@ -19,6 +19,19 @@ public class CommandManager {
         undoStack.push(command);
     }
 
+    public void accumulateTranslation(TranslateCommand command) {
+        if (!undoStack.isEmpty() && undoStack.peek() instanceof TranslateCommand) {
+            TranslateCommand lastCmd = (TranslateCommand) undoStack.peek();
+            lastCmd.accumulate(command.getDx(), command.getDy());
+        } else {
+            undoStack.push(command);
+        }
+    }
+
+    public TranslateCommand getLastCommand() {
+        return undoStack.isEmpty() ? null : (TranslateCommand) undoStack.peek();
+    }
+
     public void undoLastCommand() {
         if (!undoStack.isEmpty()) {
             undoStack.pop().undo();

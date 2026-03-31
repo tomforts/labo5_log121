@@ -25,8 +25,8 @@ public class MouseController extends MouseAdapter implements ViewController {
     @Override
     public void handleTranslation(PerspectiveView view, int dx, int dy) {
         if (view == null || view.getPerspective() == null) return;
-        Command cmd = new TranslateCommand(view.getPerspective(), dx, dy);
-        CommandManager.getInstance().executeCommand(cmd);
+        TranslateCommand cmd = new TranslateCommand(view.getPerspective(), dx, dy);
+        CommandManager.getInstance().accumulateTranslation(cmd);
     }
 
     @Override

@@ -17,6 +17,14 @@ public class TranslateCommand extends PerspectiveCommand {
         this.oldY = perspective.getOffsetY();
     }
 
+    public int getDx() {
+        return dx;
+    }
+
+    public int getDy() {
+        return dy;
+    }
+
     @Override
     public void execute() {
         perspective.translate(dx, dy);
@@ -25,5 +33,15 @@ public class TranslateCommand extends PerspectiveCommand {
     @Override
     public void undo() {
         perspective.setOffsets(oldX, oldY);
+    }
+
+    public void accumulate(int additionalDx, int additionalDy) {
+        dx += additionalDx;
+        dy += additionalDy;
+        perspective.translate(additionalDx, additionalDy);
+    }
+
+    public boolean isTranslateCommand() {
+        return true;
     }
 }
