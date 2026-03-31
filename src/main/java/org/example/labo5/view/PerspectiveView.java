@@ -22,6 +22,11 @@ public class PerspectiveView extends JPanel implements Observer {
         this.perspective = perspective;
         this.controller = controller;
 
+        setBackground(Color.WHITE);
+
+        if (this.image != null) {
+            this.image.attach(this);
+        }
         if (this.perspective != null) {
             this.perspective.attach(this);
         }
@@ -64,32 +69,43 @@ public class PerspectiveView extends JPanel implements Observer {
             return;
         }
 
-        BufferedImage source = image.getBufferedImage();
-        if (source == null) {
+        BufferedImage img = image.getBufferedImage();
+        if (img == null) {
             return;
         }
 
-        double zoom = perspective.getZoomFactor();
-        if (zoom <= 0) {
-            zoom = 1.0;
-        }
+        BufferedImage cropped = getCroppedImage(img);
+        Rectangle bounds = getScaledBounds(cropped.getWidth(), cropped.getHeight(), getWidth(), getHeight());
 
-        int cropWidth = (int) (source.getWidth() / zoom);
-        int cropHeight = (int) (source.getHeight() / zoom);
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2d.drawImage(cropped, bounds.x, bounds.y, bounds.width, bounds.height, null);
+    }
 
-        cropWidth = Math.max(1, Math.min(cropWidth, source.getWidth()));
-        cropHeight = Math.max(1, Math.min(cropHeight, source.getHeight()));
+    private BufferedImage getCroppedImage(BufferedImage img) {
+        double zoom = Math.max(1.0, perspective.getZoomFactor());
 
-        int centerX = source.getWidth() / 2 + perspective.getOffsetX();
-        int centerY = source.getHeight() / 2 + perspective.getOffsetY();
+        int cropWidth = Math.max(1, (int) (img.getWidth() / zoom));
+        int cropHeight = Math.max(1, (int) (img.getHeight() / zoom));
+
+        int centerX = img.getWidth() / 2 + perspective.getOffsetX();
+        int centerY = img.getHeight() / 2 + perspective.getOffsetY();
 
         int x = centerX - cropWidth / 2;
         int y = centerY - cropHeight / 2;
 
-        x = Math.max(0, Math.min(x, source.getWidth() - cropWidth));
-        y = Math.max(0, Math.min(y, source.getHeight() - cropHeight));
+        x = Math.max(0, Math.min(x, img.getWidth() - cropWidth));
+        y = Math.max(0, Math.min(y, img.getHeight() - cropHeight));
 
-        BufferedImage cropped = source.getSubimage(x, y, cropWidth, cropHeight);
-        g.drawImage(cropped, 0, 0, getWidth(), getHeight(), null);
+        return img.getSubimage(x, y, cropWidth, cropHeight);
+    }
+
+    private Rectangle getScaledBounds(int imgW, int imgH, int boxW, int boxH) {
+        double scale = Math.min((double) boxW / imgW, (double) boxH / imgH);
+        int w = (int) (imgW * scale);
+        int h = (int) (imgH * scale);
+        int x = (boxW - w) / 2;
+        int y = (boxH - h) / 2;
+        return new Rectangle(x, y, w, h);
     }
 }

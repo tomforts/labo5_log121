@@ -13,7 +13,10 @@ public class ImageView extends JPanel implements Observer {
 
     public ImageView(Image image) {
         this.image = image;
-        image.attach(this);
+        setBackground(Color.WHITE);
+        if (this.image != null) {
+            this.image.attach(this);
+        }
     }
 
     @Override
@@ -25,9 +28,24 @@ public class ImageView extends JPanel implements Observer {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        BufferedImage img = image.getBufferedImage();
-        if (img != null) {
-            g.drawImage(img, 0, 0, getWidth(), getHeight(), null);
+        BufferedImage img = image != null ? image.getBufferedImage() : null;
+        if (img == null) {
+            return;
         }
+
+        Rectangle bounds = getScaledBounds(img.getWidth(), img.getHeight(), getWidth(), getHeight());
+
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2d.drawImage(img, bounds.x, bounds.y, bounds.width, bounds.height, null);
+    }
+
+    private Rectangle getScaledBounds(int imgW, int imgH, int boxW, int boxH) {
+        double scale = Math.min((double) boxW / imgW, (double) boxH / imgH);
+        int w = (int) (imgW * scale);
+        int h = (int) (imgH * scale);
+        int x = (boxW - w) / 2;
+        int y = (boxH - h) / 2;
+        return new Rectangle(x, y, w, h);
     }
 }

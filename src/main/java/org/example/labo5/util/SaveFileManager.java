@@ -18,6 +18,10 @@ public class SaveFileManager {
     public ImageDocument loadImage() throws IOException {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Choisir une image");
+        fileChooser.setFileFilter(new FileNameExtensionFilter(
+                "Images (*.png, *.jpg, *.jpeg)",
+                "png", "jpg", "jpeg"
+        ));
 
         int result = fileChooser.showOpenDialog(parent);
         if (result != JFileChooser.APPROVE_OPTION) {
@@ -25,24 +29,9 @@ public class SaveFileManager {
         }
 
         File selectedFile = fileChooser.getSelectedFile();
-
         Image image = new Image();
         image.loadImage(selectedFile.getAbsolutePath());
-
-        Perspective perspective1 = new Perspective("Perspective 1");
-        Perspective perspective2 = new Perspective("Perspective 2");
-
-        perspective1.setZoomFactor(2);
-        perspective1.setOffsets(-150, -80);
-
-        perspective2.setZoomFactor(2);
-        perspective2.setOffsets(180, 120);
-
-        ImageDocument imageDocument = new ImageDocument(image);
-        imageDocument.addPerspective(perspective1);
-        imageDocument.addPerspective(perspective2);
-
-        return imageDocument;
+        return createDefaultDocument(image);
     }
 
     public ImageDocument loadImageDocument() throws IOException, ClassNotFoundException {
@@ -58,7 +47,8 @@ public class SaveFileManager {
         File selectedFile = fileChooser.getSelectedFile();
 
         try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(selectedFile))) {
-            return (ImageDocument) inputStream.readObject();
+            ImageDocument imageDocument = (ImageDocument) inputStream.readObject();
+            return normalizeDocument(imageDocument);
         }
     }
 
@@ -79,7 +69,30 @@ public class SaveFileManager {
         }
 
         try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(selectedFile))) {
-            outputStream.writeObject(imageDocument);
+            outputStream.writeObject(normalizeDocument(imageDocument));
         }
+    }
+
+    private ImageDocument createDefaultDocument(Image image) {
+        ImageDocument imageDocument = new ImageDocument(image);
+        imageDocument.addPerspective(new Perspective("Perspective 1"));
+        imageDocument.addPerspective(new Perspective("Perspective 2"));
+        return imageDocument;
+    }
+
+    private ImageDocument normalizeDocument(ImageDocument imageDocument) {
+        if (imageDocument == null) {
+            return null;
+        }
+
+        if (imageDocument.getPerspectives() == null) {
+            return createDefaultDocument(imageDocument.getImage());
+        }
+
+        while (imageDocument.getPerspectives().size() < 2) {
+            imageDocument.addPerspective(new Perspective("Perspective " + (imageDocument.getPerspectives().size() + 1)));
+        }
+
+        return imageDocument;
     }
 }
