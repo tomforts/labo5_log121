@@ -14,6 +14,7 @@ public class MouseController extends MouseAdapter implements ViewController {
 
     private int lastX;
     private int lastY;
+    private TranslateCommand currentTranslation;
 
     @Override
     public void handleZoom(PerspectiveView view, double delta) {
@@ -25,14 +26,27 @@ public class MouseController extends MouseAdapter implements ViewController {
     @Override
     public void handleTranslation(PerspectiveView view, int dx, int dy) {
         if (view == null || view.getPerspective() == null) return;
-        TranslateCommand cmd = new TranslateCommand(view.getPerspective(), dx, dy);
-        CommandManager.getInstance().accumulateTranslation(cmd);
+        
+        if (currentTranslation == null) {
+            currentTranslation = new TranslateCommand(view.getPerspective(), dx, dy);
+            currentTranslation.execute();
+        } else {
+            currentTranslation.accumulate(dx, dy);
+        }
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
         lastX = e.getX();
         lastY = e.getY();
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        if (currentTranslation != null) {
+            CommandManager.getInstance().executeCommand(currentTranslation);
+            currentTranslation = null;
+        }
     }
 
     @Override
