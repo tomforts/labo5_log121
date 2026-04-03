@@ -1,4 +1,4 @@
-package org.example.labo5;
+package org.example.labo5.observer;
 import java.util.LinkedList;
 import java.util.List;
 

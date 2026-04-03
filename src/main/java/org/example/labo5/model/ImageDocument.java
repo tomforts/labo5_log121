@@ -1,9 +1,8 @@
-package org.example.labo5;
+package org.example.labo5.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.*;
 import java.io.*;
 
 public class ImageDocument implements Serializable {

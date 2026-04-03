@@ -1,4 +1,8 @@
-package org.example.labo5;
+package org.example.labo5.view;
+
+import org.example.labo5.observer.Observer;
+import org.example.labo5.observer.Subject;
+import org.example.labo5.model.Image;
 
 import javax.swing.*;
 import java.awt.*;
@@ -6,7 +10,7 @@ import java.awt.image.BufferedImage;
 
 public class ImageView extends JPanel implements Observer {
 
-    private Image image;
+    private org.example.labo5.model.Image image;
 
     public ImageView(Image image) {
         this.image = image;

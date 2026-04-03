@@ -1,13 +1,11 @@
-package org.example.labo5;
+package org.example.labo5.model;
+
+import org.example.labo5.observer.Subject;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import javax.swing.*;
 import java.io.*;
 
 public class Image extends Subject implements java.io.Serializable{
