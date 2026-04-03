@@ -1,4 +1,6 @@
-package org.example.labo5;
+package org.example.labo5.controller;
+
+import org.example.labo5.view.PerspectiveView;
 
 public interface ViewController {
 

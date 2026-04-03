@@ -1,4 +1,6 @@
-package org.example.labo5;
+package org.example.labo5.command;
+
+import org.example.labo5.model.Perspective;
 
 public abstract class PerspectiveCommand implements Command {
 

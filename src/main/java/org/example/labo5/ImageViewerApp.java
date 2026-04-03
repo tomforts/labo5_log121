@@ -1,5 +1,15 @@
 package org.example.labo5;
 
+import org.example.labo5.controller.MenuController;
+import org.example.labo5.controller.MouseController;
+import org.example.labo5.model.Image;
+import org.example.labo5.model.ImageDocument;
+import org.example.labo5.model.Perspective;
+import org.example.labo5.model.PerspectiveClipboard;
+import org.example.labo5.services.SaveFileManager;
+import org.example.labo5.view.ImageView;
+import org.example.labo5.view.PerspectiveView;
+
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
@@ -10,6 +20,7 @@ public class ImageViewerApp extends JFrame {
     private final JButton loadDocumentButton;
     private final JButton saveDocumentButton;
     private final JButton undoButton;
+    private final JButton redoButton;
 
     private final JPanel imagePanel;
     private final JPanel perspective1Panel;
@@ -17,10 +28,12 @@ public class ImageViewerApp extends JFrame {
 
     private final MenuController menuController;
     private final MouseController mouseController;
+    private final PerspectiveClipboard perspectiveClipboard;
 
     public ImageViewerApp() {
         menuController  = new MenuController(new SaveFileManager(this));
         mouseController = new MouseController();
+        perspectiveClipboard = new PerspectiveClipboard();
 
         setTitle("LOG121 - Labo 5");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -30,12 +43,14 @@ public class ImageViewerApp extends JFrame {
         loadDocumentButton = new JButton("Charger document");
         saveDocumentButton = new JButton("Sauvegarder document");
         undoButton         = new JButton("Undo");
+        redoButton         = new JButton("Redo");
 
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         topPanel.add(loadImageButton);
         topPanel.add(loadDocumentButton);
         topPanel.add(saveDocumentButton);
         topPanel.add(undoButton);
+        topPanel.add(redoButton);
 
         imagePanel        = createImageContainer("Image originale");
         perspective1Panel = createImageContainer("Perspective 1");
@@ -66,6 +81,7 @@ public class ImageViewerApp extends JFrame {
         loadDocumentButton.addActionListener(e -> loadImageDocument());
         saveDocumentButton.addActionListener(e -> saveImageDocument());
         undoButton.addActionListener(e -> menuController.onUndo());
+        redoButton.addActionListener(e -> menuController.onRedo());
     }
 
     private JPanel createImageContainer(String title) {
@@ -101,10 +117,18 @@ public class ImageViewerApp extends JFrame {
     }
 
     private PerspectiveView createPerspectiveView(String name, Image image, Perspective perspective) {
-        PerspectiveView view = new PerspectiveView(name, image, perspective, mouseController);
+        PerspectiveView view = new PerspectiveView(
+                name,
+                image,
+                perspective,
+                mouseController,
+                perspectiveClipboard
+        );
+
         view.addMouseListener(mouseController);
         view.addMouseMotionListener(mouseController);
         view.addMouseWheelListener(mouseController);
+
         return view;
     }
 
@@ -152,10 +176,12 @@ public class ImageViewerApp extends JFrame {
             return;
         }
         try {
-            menuController.onSave();
-            JOptionPane.showMessageDialog(this,
-                    "Document sauvegardé avec succès.",
-                    "Sauvegarde", JOptionPane.INFORMATION_MESSAGE);
+            boolean saved = menuController.onSave();
+            if (saved) {
+                JOptionPane.showMessageDialog(this,
+                        "Document sauvegardé avec succès.",
+                        "Sauvegarde", JOptionPane.INFORMATION_MESSAGE);
+            }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this,
                     "Erreur lors de la sauvegarde : " + ex.getMessage(),

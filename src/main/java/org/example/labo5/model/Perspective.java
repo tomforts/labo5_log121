@@ -1,9 +1,7 @@
-package org.example.labo5;
+package org.example.labo5.model;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import javax.swing.*;
+import org.example.labo5.observer.Subject;
+
 import java.io.*;
 
 public class Perspective extends Subject implements java.io.Serializable{
@@ -76,5 +74,17 @@ public class Perspective extends Subject implements java.io.Serializable{
 
     public String getId() {
         return id;
+    }
+
+    public PerspectiveMemento saveToMemento() {
+        return new PerspectiveMemento(zoomFactor, offsetX, offsetY);
+    }
+
+    public void restoreFromMemento(PerspectiveMemento memento) {
+        if (memento == null) {
+            return;
+        }
+        setOffsets(memento.getOffsetX(), memento.getOffsetY());
+        setZoomFactor(memento.getZoomFactor());
     }
 }
