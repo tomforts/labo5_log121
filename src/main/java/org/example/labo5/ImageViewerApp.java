@@ -1,5 +1,8 @@
 package org.example.labo5;
 
+import org.example.labo5.command.Command;
+import org.example.labo5.command.CommandManager;
+import org.example.labo5.command.RotateCommand;
 import org.example.labo5.controller.MenuController;
 import org.example.labo5.controller.MouseController;
 import org.example.labo5.model.Image;
@@ -21,6 +24,8 @@ public class ImageViewerApp extends JFrame {
     private final JButton saveDocumentButton;
     private final JButton undoButton;
     private final JButton redoButton;
+    private final JButton rotateButton;
+    private final JButton rotateButton2;
 
     private final JPanel imagePanel;
     private final JPanel perspective1Panel;
@@ -44,6 +49,8 @@ public class ImageViewerApp extends JFrame {
         saveDocumentButton = new JButton("Sauvegarder document");
         undoButton         = new JButton("Undo");
         redoButton         = new JButton("Redo");
+        rotateButton       = new JButton("Rotate P1");
+        rotateButton2       = new JButton("Rotate P2");
 
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         topPanel.add(loadImageButton);
@@ -51,6 +58,8 @@ public class ImageViewerApp extends JFrame {
         topPanel.add(saveDocumentButton);
         topPanel.add(undoButton);
         topPanel.add(redoButton);
+        topPanel.add(rotateButton);
+        topPanel.add(rotateButton2);
 
         imagePanel        = createImageContainer("Image originale");
         perspective1Panel = createImageContainer("Perspective 1");
@@ -82,6 +91,8 @@ public class ImageViewerApp extends JFrame {
         saveDocumentButton.addActionListener(e -> saveImageDocument());
         undoButton.addActionListener(e -> menuController.onUndo());
         redoButton.addActionListener(e -> menuController.onRedo());
+        rotateButton.addActionListener(e -> rotatePerspective(0));
+        rotateButton2.addActionListener(e -> rotatePerspective(1));
     }
 
     private JPanel createImageContainer(String title) {
@@ -187,6 +198,20 @@ public class ImageViewerApp extends JFrame {
                     "Erreur lors de la sauvegarde : " + ex.getMessage(),
                     "Erreur", JOptionPane.ERROR_MESSAGE);
         }
+    }
+    public void rotatePerspective(int  perspectiveIndex){
+        ImageDocument document = menuController.getImageDocument();
+        if (document == null) {
+            JOptionPane.showMessageDialog(this,
+                    "Aucun document chargé.",
+                    "Erreur", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        Perspective perspective = document.getPerspectives().get(perspectiveIndex);
+        Command cmd = new RotateCommand(perspective,90);
+        CommandManager.getInstance().executeCommand(cmd);
+
+
     }
 
     public static void main(String[] args) {

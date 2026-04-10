@@ -17,6 +17,7 @@ import javax.swing.event.PopupMenuListener;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
 public class PerspectiveView extends JPanel implements Observer {
@@ -176,7 +177,21 @@ public class PerspectiveView extends JPanel implements Observer {
 
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        g2d.drawImage(cropped, bounds.x, bounds.y, bounds.width, bounds.height, null);
+        
+        int angle = perspective.getAngle();
+        if (angle != 0) {
+            AffineTransform originalTransform = g2d.getTransform();
+            
+            int centerX = bounds.x + bounds.width / 2;
+            int centerY = bounds.y + bounds.height / 2;
+            
+            g2d.rotate(Math.toRadians(angle), centerX, centerY);
+            g2d.drawImage(cropped, bounds.x, bounds.y, bounds.width, bounds.height, null);
+            
+            g2d.setTransform(originalTransform);
+        } else {
+            g2d.drawImage(cropped, bounds.x, bounds.y, bounds.width, bounds.height, null);
+        }
     }
 
     private BufferedImage getCroppedImage(BufferedImage img) {

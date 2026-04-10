@@ -60,4 +60,5 @@ public class MenuController  {
         }
         return saveFileManager.saveImageDocument(imageDocument);
     }
+    public void onRotate(){}
 }

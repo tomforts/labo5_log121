@@ -15,6 +15,7 @@ public class Perspective extends Subject implements java.io.Serializable{
     private int offsetY;
     private int viewportWidth;
     private int viewportHeight;
+    private int angle;
 
     public Perspective(String id) {
         this.id = id;
@@ -26,6 +27,7 @@ public class Perspective extends Subject implements java.io.Serializable{
     }
 
     public void zoom(double delta) {
+
         setZoomFactor(zoomFactor + delta);
     }
 
@@ -45,6 +47,15 @@ public class Perspective extends Subject implements java.io.Serializable{
         this.offsetX = x;
         this.offsetY = y;
         notifyObservers();
+    }
+
+    public void setAngle(int angle) {
+        this.angle = angle;
+        notifyObservers();
+    }
+
+    public int getAngle() {
+        return angle;
     }
 
     public double getZoomFactor() {
@@ -77,7 +88,7 @@ public class Perspective extends Subject implements java.io.Serializable{
     }
 
     public PerspectiveMemento saveToMemento() {
-        return new PerspectiveMemento(zoomFactor, offsetX, offsetY);
+        return new PerspectiveMemento(zoomFactor, offsetX, offsetY,angle);
     }
 
     public void restoreFromMemento(PerspectiveMemento memento) {
@@ -86,5 +97,11 @@ public class Perspective extends Subject implements java.io.Serializable{
         }
         setOffsets(memento.getOffsetX(), memento.getOffsetY());
         setZoomFactor(memento.getZoomFactor());
+        setAngle(memento.getAngle());
+    }
+    public void rotate(int degrees){
+        int newAngle = (this.angle + degrees) % 360;
+        setAngle(newAngle);
+
     }
 }

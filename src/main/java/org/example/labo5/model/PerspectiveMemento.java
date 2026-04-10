@@ -10,11 +10,13 @@ public class PerspectiveMemento {
     private final double zoomFactor;
     private final int offsetX;
     private final int offsetY;
+    private int angle;
 
-    public PerspectiveMemento(double zoomFactor, int offsetX, int offsetY) {
+    public PerspectiveMemento(double zoomFactor, int offsetX, int offsetY, int angle) {
         this.zoomFactor = zoomFactor;
         this.offsetX = offsetX;
         this.offsetY = offsetY;
+        this.angle=angle;
     }
 
     public double getZoomFactor() {
@@ -28,4 +30,6 @@ public class PerspectiveMemento {
     public int getOffsetY() {
         return offsetY;
     }
+
+    public int getAngle(){return angle;}
 }
