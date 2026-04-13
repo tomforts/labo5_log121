@@ -21,23 +21,14 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
 public class PerspectiveView extends JPanel implements Observer {
-
-    private final String viewName;
     private final Image image;
     private final Perspective perspective;
-    private final ViewController controller;
     private final PerspectiveClipboard clipboard;
     private final JPopupMenu popupMenu;
 
-    public PerspectiveView(String viewName,
-                           Image image,
-                           Perspective perspective,
-                           ViewController controller,
-                           PerspectiveClipboard clipboard) {
-        this.viewName = viewName;
+    public PerspectiveView(Image image, Perspective perspective, PerspectiveClipboard clipboard) {
         this.image = image;
         this.perspective = perspective;
-        this.controller = controller;
         this.clipboard = clipboard;
 
         setBackground(Color.WHITE);
@@ -53,20 +44,8 @@ public class PerspectiveView extends JPanel implements Observer {
         registerPopupListener();
     }
 
-    public String getViewName() {
-        return viewName;
-    }
-
-    public Image getImage() {
-        return image;
-    }
-
     public Perspective getPerspective() {
         return perspective;
-    }
-
-    public ViewController getController() {
-        return controller;
     }
 
     @Override
@@ -74,14 +53,13 @@ public class PerspectiveView extends JPanel implements Observer {
         repaint();
     }
 
-    public void display() {
-        repaint();
-    }
 
-    public void renderPerspective() {
-        repaint();
-    }
-
+    /**
+     * Crée le menu pour copier et coller
+     * les paramètres d'une perspective.
+     *
+     * @return le menu contextuel configuré
+     */
     private JPopupMenu createPopupMenu() {
         JPopupMenu popup = new JPopupMenu();
 
@@ -158,7 +136,9 @@ public class PerspectiveView extends JPanel implements Observer {
             popupMenu.show(e.getComponent(), e.getX(), e.getY());
         }
     }
-
+    /**
+     * Dessine la vue de la perspective.
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -194,6 +174,13 @@ public class PerspectiveView extends JPanel implements Observer {
         }
     }
 
+    /**
+     * Retourne une portion de l'image en fonction du zoom et de la translation
+     * de la perspective.
+     *
+     * @param img image source
+     * @return image recadrée selon la perspective
+     */
     private BufferedImage getCroppedImage(BufferedImage img) {
         double zoom = Math.max(1.0, perspective.getZoomFactor());
 
@@ -212,6 +199,17 @@ public class PerspectiveView extends JPanel implements Observer {
         return img.getSubimage(x, y, cropWidth, cropHeight);
     }
 
+    /**
+     * Calcule les dimensions et la position d'une image redimensionnée
+     * afin qu'elle s'adapte à une zone donnée.
+     *
+     * @param imgW largeur originale de l'image
+     * @param imgH hauteur originale de l'image
+     * @param boxW largeur du conteneur
+     * @param boxH hauteur du conteneur
+     * @return un rectangle représentant la position (x, y) et la taille (largeur, hauteur)
+     *         de l'image redimensionnée dans le conteneur
+     */
     private Rectangle getScaledBounds(int imgW, int imgH, int boxW, int boxH) {
         double scale = Math.min((double) boxW / imgW, (double) boxH / imgH);
         int w = (int) (imgW * scale);

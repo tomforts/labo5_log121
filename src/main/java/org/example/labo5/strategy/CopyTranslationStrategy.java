@@ -11,6 +11,7 @@ public class CopyTranslationStrategy implements CopyPasteStrategy {
                 null,
                 source.getOffsetX(),
                 source.getOffsetY(),
+                null,
                 this
         );
     }

@@ -18,10 +18,6 @@ public class MenuController  {
         this.saveFileManager = saveFileManager;
     }
 
-    public void setImageDocument(ImageDocument imageDocument) {
-        this.imageDocument = imageDocument;
-    }
-
     public ImageDocument getImageDocument() {
         return imageDocument;
     }
@@ -60,5 +56,4 @@ public class MenuController  {
         }
         return saveFileManager.saveImageDocument(imageDocument);
     }
-    public void onRotate(){}
 }

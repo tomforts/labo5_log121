@@ -6,9 +6,6 @@ import java.util.List;
 import java.io.*;
 
 public class ImageDocument implements Serializable {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private Image image;
     private List<Perspective> perspectives;
 
@@ -28,9 +25,4 @@ public class ImageDocument implements Serializable {
     public void addPerspective(Perspective perspective) {
         perspectives.add(perspective);
     }
-
-    public void removePerspective(Perspective perspective) {
-        perspectives.remove(perspective);
-    }
-
 }

@@ -11,6 +11,7 @@ public class CopyZoomStrategy implements CopyPasteStrategy {
                 source.getZoomFactor(),
                 null,
                 null,
+                null,
                 this
         );
     }

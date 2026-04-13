@@ -11,9 +11,6 @@ import java.io.*;
 
 /**
  * Gère le chargement et la sauvegarde des documents image.
- * Elle s'occupe aussi de normaliser les documents chargés
- * afin de garantir qu'ils contiennent une structure valide.
- *
  */
 public class SaveFileManager {
 

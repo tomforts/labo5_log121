@@ -1,9 +1,9 @@
 package org.example.labo5.model;
 
 /**
- * Représente un instantané de l'état d'une perspective.
+ * Représente un état d'une perspective.
  * Ce memento permet de sauvegarder et restaurer les valeurs
- * de zoom et de translation.
+ * de zoom, de translation et de rotation.
  */
 public class PerspectiveMemento {
 

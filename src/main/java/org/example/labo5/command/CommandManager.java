@@ -40,7 +40,5 @@ public class CommandManager {
         return !undoStack.isEmpty();
     }
 
-    public boolean canRedo() {
-        return !redoStack.isEmpty();
-    }
+    public boolean canRedo() { return !redoStack.isEmpty(); }
 }

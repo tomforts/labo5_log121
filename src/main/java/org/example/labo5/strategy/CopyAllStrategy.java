@@ -11,6 +11,7 @@ public class CopyAllStrategy implements CopyPasteStrategy {
                 source.getZoomFactor(),
                 source.getOffsetX(),
                 source.getOffsetY(),
+                source.getAngle(),
                 this
         );
     }
@@ -19,6 +20,9 @@ public class CopyAllStrategy implements CopyPasteStrategy {
     public void paste(PerspectiveClipboard clipboard, Perspective target) {
         if (clipboard.getZoomFactor() != null) {
             target.setZoomFactor(clipboard.getZoomFactor());
+        }
+        if(clipboard.getAngle() != null) {
+            target.setAngle(clipboard.getAngle());
         }
 
         if (clipboard.getOffsetX() != null && clipboard.getOffsetY() != null) {

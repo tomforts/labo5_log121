@@ -40,7 +40,17 @@ public class ImageView extends JPanel implements Observer {
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         g2d.drawImage(img, bounds.x, bounds.y, bounds.width, bounds.height, null);
     }
-
+    /**
+     * Calcule les dimensions et la position d'une image redimensionnée
+     * afin qu'elle s'adapte à une zone donnée.
+     *
+     * @param imgW largeur originale de l'image
+     * @param imgH hauteur originale de l'image
+     * @param boxW largeur du conteneur
+     * @param boxH hauteur du conteneur
+     * @return un rectangle représentant la position (x, y) et la taille (largeur, hauteur)
+     *         de l'image redimensionnée dans le conteneur
+     */
     private Rectangle getScaledBounds(int imgW, int imgH, int boxW, int boxH) {
         double scale = Math.min((double) boxW / imgW, (double) boxH / imgH);
         int w = (int) (imgW * scale);

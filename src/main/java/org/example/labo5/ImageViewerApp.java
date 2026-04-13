@@ -35,6 +35,9 @@ public class ImageViewerApp extends JFrame {
     private final MouseController mouseController;
     private final PerspectiveClipboard perspectiveClipboard;
 
+    /**
+     * Initialisation des composants de l'application
+     */
     public ImageViewerApp() {
         menuController  = new MenuController(new SaveFileManager(this));
         mouseController = new MouseController();
@@ -85,6 +88,9 @@ public class ImageViewerApp extends JFrame {
         setVisible(true);
     }
 
+    /**
+     * Ajouter des listeners aux boutons de l'interface
+     */
     private void registerListeners() {
         loadImageButton.addActionListener(e -> loadImageDocumentFromImage());
         loadDocumentButton.addActionListener(e -> loadImageDocument());
@@ -127,12 +133,17 @@ public class ImageViewerApp extends JFrame {
         panel.repaint();
     }
 
-    private PerspectiveView createPerspectiveView(String name, Image image, Perspective perspective) {
+    /**
+     * Crée une vue de perspective et lui associe les contrôleurs souris.
+     *
+     * @param image associée
+     * @param perspective associée
+     * @return vue configurée
+     */
+    private PerspectiveView createPerspectiveView(Image image, Perspective perspective) {
         PerspectiveView view = new PerspectiveView(
-                name,
                 image,
                 perspective,
-                mouseController,
                 perspectiveClipboard
         );
 
@@ -143,6 +154,9 @@ public class ImageViewerApp extends JFrame {
         return view;
     }
 
+    /**
+     * Installe un document dans l'interface et met à jour les vues.
+     */
     private void installDocument() {
         ImageDocument document = menuController.getImageDocument();
         if (document == null || document.getImage() == null) {
@@ -155,10 +169,13 @@ public class ImageViewerApp extends JFrame {
         Perspective p1 = document.getPerspectives().get(0);
         Perspective p2 = document.getPerspectives().get(1);
 
-        setPanelContent(perspective1Panel, createPerspectiveView("Perspective 1", document.getImage(), p1));
-        setPanelContent(perspective2Panel, createPerspectiveView("Perspective 2", document.getImage(), p2));
+        setPanelContent(perspective1Panel, createPerspectiveView(document.getImage(), p1));
+        setPanelContent(perspective2Panel, createPerspectiveView(document.getImage(), p2));
     }
 
+    /**
+     * Charge un document image depuis une image
+     */
     private void loadImageDocumentFromImage() {
         try {
             if (menuController.onLoadImage() != null) installDocument();
@@ -169,6 +186,9 @@ public class ImageViewerApp extends JFrame {
         }
     }
 
+    /**
+     * Charge un document image
+     */
     private void loadImageDocument() {
         try {
             if (menuController.onLoadDocument() != null) installDocument();
