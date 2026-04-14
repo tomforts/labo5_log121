@@ -7,8 +7,6 @@ public class TranslateCommand extends PerspectiveCommand {
 
     private final int dx;
     private final int dy;
-    private PerspectiveMemento before;
-    private PerspectiveMemento after;
 
     public TranslateCommand(Perspective perspective, int dx, int dy) {
         super(perspective);

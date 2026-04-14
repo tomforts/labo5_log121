@@ -4,8 +4,6 @@ import org.example.labo5.model.Perspective;
 import org.example.labo5.model.PerspectiveMemento;
 
 public class RotateCommand extends PerspectiveCommand {
-    private PerspectiveMemento before;
-    private PerspectiveMemento after;
     private int deltaAngle;
 
     public RotateCommand(Perspective perspective, int deltaAngle) {

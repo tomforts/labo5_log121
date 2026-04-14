@@ -6,8 +6,6 @@ import org.example.labo5.model.PerspectiveMemento;
 public class ZoomCommand extends PerspectiveCommand {
 
     private final double deltaZoom;
-    private PerspectiveMemento before;
-    private PerspectiveMemento after;
 
     public ZoomCommand(Perspective perspective, double deltaZoom) {
         super(perspective);

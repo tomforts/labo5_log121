@@ -6,10 +6,7 @@ import org.example.labo5.model.Perspective;
 import org.example.labo5.model.PerspectiveClipboard;
 import org.example.labo5.observer.Observer;
 import org.example.labo5.observer.Subject;
-import org.example.labo5.strategy.CopyAllStrategy;
-import org.example.labo5.strategy.CopyPasteStrategy;
-import org.example.labo5.strategy.CopyTranslationStrategy;
-import org.example.labo5.strategy.CopyZoomStrategy;
+import org.example.labo5.strategy.*;
 
 import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
@@ -67,6 +64,7 @@ public class PerspectiveView extends JPanel implements Observer {
         JMenuItem copyZoomItem = new JMenuItem("Zoom");
         JMenuItem copyTranslationItem = new JMenuItem("Translation");
         JMenuItem copyAllItem = new JMenuItem("Tout");
+        JMenuItem copyNothingItem = new JMenuItem("Rien");
 
         JMenuItem pasteItem = new JMenuItem("Coller");
 
@@ -85,15 +83,22 @@ public class PerspectiveView extends JPanel implements Observer {
             strategy.copy(perspective, clipboard);
         });
 
+        copyNothingItem.addActionListener(e -> {
+            CopyPasteStrategy strategy = new CopyNothingStrategy();
+            strategy.copy(perspective, clipboard);
+        });
         pasteItem.addActionListener(e -> {
             if (clipboard.hasContent() && clipboard.getStrategy() != null) {
                 clipboard.getStrategy().paste(clipboard, perspective);
             }
         });
 
+
+
         copyMenu.add(copyZoomItem);
         copyMenu.add(copyTranslationItem);
         copyMenu.add(copyAllItem);
+        copyMenu.add(copyNothingItem);
 
         popup.add(copyMenu);
         popup.addSeparator();

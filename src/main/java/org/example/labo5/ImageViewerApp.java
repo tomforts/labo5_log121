@@ -230,8 +230,6 @@ public class ImageViewerApp extends JFrame {
         Perspective perspective = document.getPerspectives().get(perspectiveIndex);
         Command cmd = new RotateCommand(perspective,90);
         CommandManager.getInstance().executeCommand(cmd);
-
-
     }
 
     public static void main(String[] args) {
