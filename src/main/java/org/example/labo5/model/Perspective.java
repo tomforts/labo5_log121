@@ -1,8 +1,6 @@
 package org.example.labo5.model;
 
-import org.example.labo5.observer.Subject;
-
-import java.io.*;
+import org.example.labo5.model.observer.Subject;
 
 public class Perspective extends Subject implements java.io.Serializable{
     private static final double MIN_ZOOM = 0.1;

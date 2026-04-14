@@ -1,4 +1,4 @@
-package org.example.labo5.strategy;
+package org.example.labo5.controller.strategy;
 
 import org.example.labo5.model.Perspective;
 import org.example.labo5.model.PerspectiveClipboard;

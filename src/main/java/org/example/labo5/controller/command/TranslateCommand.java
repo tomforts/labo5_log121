@@ -1,7 +1,6 @@
-package org.example.labo5.command;
+package org.example.labo5.controller.command;
 
 import org.example.labo5.model.Perspective;
-import org.example.labo5.model.PerspectiveMemento;
 
 public class TranslateCommand extends PerspectiveCommand {
 

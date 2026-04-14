@@ -1,10 +1,10 @@
 package org.example.labo5.controller;
 
 import org.example.labo5.view.PerspectiveView;
-import org.example.labo5.command.TranslateCommand;
-import org.example.labo5.command.ZoomCommand;
-import org.example.labo5.command.Command;
-import org.example.labo5.command.CommandManager;
+import org.example.labo5.controller.command.TranslateCommand;
+import org.example.labo5.controller.command.ZoomCommand;
+import org.example.labo5.controller.command.Command;
+import org.example.labo5.controller.command.CommandManager;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;

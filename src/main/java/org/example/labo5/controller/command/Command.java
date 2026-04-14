@@ -1,4 +1,4 @@
-package org.example.labo5.command;
+package org.example.labo5.controller.command;
 
 public interface Command {
 

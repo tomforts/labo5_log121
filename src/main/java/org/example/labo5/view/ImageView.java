@@ -1,7 +1,7 @@
 package org.example.labo5.view;
 
-import org.example.labo5.observer.Observer;
-import org.example.labo5.observer.Subject;
+import org.example.labo5.model.observer.Observer;
+import org.example.labo5.model.observer.Subject;
 import org.example.labo5.model.Image;
 
 import javax.swing.*;

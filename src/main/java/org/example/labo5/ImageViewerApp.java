@@ -1,15 +1,12 @@
 package org.example.labo5;
 
-import org.example.labo5.command.Command;
-import org.example.labo5.command.CommandManager;
-import org.example.labo5.command.RotateCommand;
 import org.example.labo5.controller.MenuController;
 import org.example.labo5.controller.MouseController;
 import org.example.labo5.model.Image;
 import org.example.labo5.model.ImageDocument;
 import org.example.labo5.model.Perspective;
 import org.example.labo5.model.PerspectiveClipboard;
-import org.example.labo5.services.SaveFileManager;
+import org.example.labo5.controller.services.SaveFileManager;
 import org.example.labo5.view.ImageView;
 import org.example.labo5.view.PerspectiveView;
 
@@ -97,8 +94,8 @@ public class ImageViewerApp extends JFrame {
         saveDocumentButton.addActionListener(e -> saveImageDocument());
         undoButton.addActionListener(e -> menuController.onUndo());
         redoButton.addActionListener(e -> menuController.onRedo());
-        rotateButton.addActionListener(e -> rotatePerspective(0));
-        rotateButton2.addActionListener(e -> rotatePerspective(1));
+        rotateButton.addActionListener(e -> menuController.onRotate(0));
+        rotateButton2.addActionListener(e -> menuController.onRotate(1));
     }
 
     private JPanel createImageContainer(String title) {
@@ -218,18 +215,6 @@ public class ImageViewerApp extends JFrame {
                     "Erreur lors de la sauvegarde : " + ex.getMessage(),
                     "Erreur", JOptionPane.ERROR_MESSAGE);
         }
-    }
-    public void rotatePerspective(int  perspectiveIndex){
-        ImageDocument document = menuController.getImageDocument();
-        if (document == null) {
-            JOptionPane.showMessageDialog(this,
-                    "Aucun document chargé.",
-                    "Erreur", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        Perspective perspective = document.getPerspectives().get(perspectiveIndex);
-        Command cmd = new RotateCommand(perspective,90);
-        CommandManager.getInstance().executeCommand(cmd);
     }
 
     public static void main(String[] args) {

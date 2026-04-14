@@ -1,12 +1,13 @@
 package org.example.labo5.controller;
 
-import org.example.labo5.services.SaveFileManager;
-import org.example.labo5.command.CommandManager;
+import org.example.labo5.controller.command.Command;
+import org.example.labo5.controller.command.RotateCommand;
+import org.example.labo5.model.Perspective;
+import org.example.labo5.controller.services.SaveFileManager;
+import org.example.labo5.controller.command.CommandManager;
 import org.example.labo5.model.ImageDocument;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 
 public class MenuController  {
@@ -27,6 +28,19 @@ public class MenuController  {
     }
 
     public void onRedo() {CommandManager.getInstance().redoLastCommand();}
+
+    public void onRotate(int perspectiveIndex) {
+        ImageDocument document = getImageDocument();
+        if (document == null) {
+            JOptionPane.showMessageDialog(null,
+                    "Aucun document chargé.",
+                    "Erreur", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        Perspective perspective = document.getPerspectives().get(perspectiveIndex);
+        Command cmd = new RotateCommand(perspective,90);
+        CommandManager.getInstance().executeCommand(cmd);
+    }
 
     public ImageDocument onLoadImage() {
         try {

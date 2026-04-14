@@ -1,6 +1,6 @@
 package org.example.labo5.model;
 
-import org.example.labo5.strategy.CopyPasteStrategy;
+import org.example.labo5.controller.strategy.CopyPasteStrategy;
 
 /**
  * Représente un presse-papiers pour une perspective.

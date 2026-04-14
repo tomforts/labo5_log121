@@ -1,12 +1,11 @@
 package org.example.labo5.view;
 
-import org.example.labo5.controller.ViewController;
 import org.example.labo5.model.Image;
 import org.example.labo5.model.Perspective;
 import org.example.labo5.model.PerspectiveClipboard;
-import org.example.labo5.observer.Observer;
-import org.example.labo5.observer.Subject;
-import org.example.labo5.strategy.*;
+import org.example.labo5.model.observer.Observer;
+import org.example.labo5.model.observer.Subject;
+import org.example.labo5.controller.strategy.*;
 
 import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;

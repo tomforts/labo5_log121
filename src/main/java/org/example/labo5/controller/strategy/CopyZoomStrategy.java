@@ -1,16 +1,16 @@
-package org.example.labo5.strategy;
+package org.example.labo5.controller.strategy;
 
 import org.example.labo5.model.Perspective;
 import org.example.labo5.model.PerspectiveClipboard;
 
-public class CopyTranslationStrategy implements CopyPasteStrategy {
+public class CopyZoomStrategy implements CopyPasteStrategy {
 
     @Override
     public void copy(Perspective source, PerspectiveClipboard clipboard) {
         clipboard.setContent(
+                source.getZoomFactor(),
                 null,
-                source.getOffsetX(),
-                source.getOffsetY(),
+                null,
                 null,
                 this
         );
@@ -18,13 +18,13 @@ public class CopyTranslationStrategy implements CopyPasteStrategy {
 
     @Override
     public void paste(PerspectiveClipboard clipboard, Perspective target) {
-        if (clipboard.getOffsetX() != null && clipboard.getOffsetY() != null) {
-            target.setOffsets(clipboard.getOffsetX(), clipboard.getOffsetY());
+        if (clipboard.getZoomFactor() != null) {
+            target.setZoomFactor(clipboard.getZoomFactor());
         }
     }
 
     @Override
     public String getName() {
-        return "Translation";
+        return "Zoom";
     }
 }

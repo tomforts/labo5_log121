@@ -1,4 +1,4 @@
-package org.example.labo5.services;
+package org.example.labo5.controller.services;
 
 import org.example.labo5.model.Image;
 import org.example.labo5.model.ImageDocument;
