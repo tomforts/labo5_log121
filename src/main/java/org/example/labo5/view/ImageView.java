@@ -21,13 +21,13 @@ public class ImageView extends JPanel implements Observer {
     }
 
     @Override
-    public void update(Subject s) {
+    public void update(Subject subject) {
         repaint();
     }
 
     @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
+    protected void paintComponent(Graphics graphics) {
+        super.paintComponent(graphics);
 
         BufferedImage img = image != null ? image.getBufferedImage() : null;
         if (img == null) {
@@ -36,7 +36,7 @@ public class ImageView extends JPanel implements Observer {
 
         Rectangle bounds = getScaledBounds(img.getWidth(), img.getHeight(), getWidth(), getHeight());
 
-        Graphics2D g2d = (Graphics2D) g;
+        Graphics2D g2d = (Graphics2D) graphics;
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         g2d.drawImage(img, bounds.x, bounds.y, bounds.width, bounds.height, null);
     }

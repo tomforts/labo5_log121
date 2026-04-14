@@ -5,7 +5,7 @@ import java.util.Deque;
 
 public class CommandManager {
 
-    private static CommandManager instance = new CommandManager();
+    private final static CommandManager instance = new CommandManager();
     private Deque<Command> undoStack = new ArrayDeque<>();
     private final Deque<Command> redoStack = new ArrayDeque<>();
 

@@ -6,12 +6,12 @@ public abstract class Subject {
 
     private List<Observer> listObservers = new LinkedList<Observer>();
 
-    public void attach(Observer o) {
-        listObservers.add(o);
+    public void attach(Observer observer) {
+        listObservers.add(observer);
     }
 
-    public void detach(Observer o) {
-        listObservers.remove(o);
+    public void detach(Observer observer) {
+        listObservers.remove(observer);
     }
 
     public void notifyObservers() {

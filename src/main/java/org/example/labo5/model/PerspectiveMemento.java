@@ -10,7 +10,7 @@ public class PerspectiveMemento {
     private final double zoomFactor;
     private final int offsetX;
     private final int offsetY;
-    private int angle;
+    private final int angle;
 
     public PerspectiveMemento(double zoomFactor, int offsetX, int offsetY, int angle) {
         this.zoomFactor = zoomFactor;

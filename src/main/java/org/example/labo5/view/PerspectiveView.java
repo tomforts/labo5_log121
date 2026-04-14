@@ -145,8 +145,8 @@ public class PerspectiveView extends JPanel implements Observer {
      * Dessine la vue de la perspective.
      */
     @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
+    protected void paintComponent(Graphics graphics) {
+        super.paintComponent(graphics);
 
         if (image == null || perspective == null) {
             return;
@@ -160,7 +160,7 @@ public class PerspectiveView extends JPanel implements Observer {
         BufferedImage cropped = getCroppedImage(img);
         Rectangle bounds = getScaledBounds(cropped.getWidth(), cropped.getHeight(), getWidth(), getHeight());
 
-        Graphics2D g2d = (Graphics2D) g;
+        Graphics2D g2d = (Graphics2D) graphics;
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         
         int angle = perspective.getAngle();

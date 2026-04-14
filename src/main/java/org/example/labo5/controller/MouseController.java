@@ -30,33 +30,33 @@ public class MouseController extends MouseAdapter implements ViewController {
     }
 
     @Override
-    public void mousePressed(MouseEvent e) {
-        lastX = e.getX();
-        lastY = e.getY();
+    public void mousePressed(MouseEvent event) {
+        lastX = event.getX();
+        lastY = event.getY();
     }
 
     @Override
-    public void mouseDragged(MouseEvent e) {
-        if (e.getSource() instanceof PerspectiveView) {
-            PerspectiveView view = (PerspectiveView) e.getSource();
-            int dx = e.getX() - lastX;
-            int dy = e.getY() - lastY;
+    public void mouseDragged(MouseEvent event) {
+        if (event.getSource() instanceof PerspectiveView) {
+            PerspectiveView view = (PerspectiveView) event.getSource();
+            int dx = event.getX() - lastX;
+            int dy = event.getY() - lastY;
             double zoom = view.getPerspective() != null ? view.getPerspective().getZoomFactor() : 1.0;
             if (zoom > 1) {
                 dx = (int) Math.round(dx / zoom);
                 dy = (int) Math.round(dy / zoom);
             }
             handleTranslation(view, -dx, -dy);
-            lastX = e.getX();
-            lastY = e.getY();
+            lastX = event.getX();
+            lastY = event.getY();
         }
     }
 
     @Override
-    public void mouseWheelMoved(MouseWheelEvent e) {
-        if (e.getSource() instanceof PerspectiveView) {
-            PerspectiveView view = (PerspectiveView) e.getSource();
-            double delta = (e.getWheelRotation() < 0) ? 0.1 : -0.1;
+    public void mouseWheelMoved(MouseWheelEvent event) {
+        if (event.getSource() instanceof PerspectiveView) {
+            PerspectiveView view = (PerspectiveView) event.getSource();
+            double delta = (event.getWheelRotation() < 0) ? 0.1 : -0.1;
             handleZoom(view, delta);
         }
     }
