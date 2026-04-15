@@ -9,7 +9,11 @@ import org.example.labo5.controller.command.CommandManager;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
-
+/**
+ * Contrôleur souris pour les interactions sur une PerspectiveView.
+ * Implémente ViewController et gère latranslation
+ * et la zoom via le patron Commande.
+ */
 public class MouseController extends MouseAdapter implements ViewController {
 
     private int lastX;
@@ -29,12 +33,23 @@ public class MouseController extends MouseAdapter implements ViewController {
         CommandManager.getInstance().executeCommand(cmd);
     }
 
+    /**
+     * Mémorise la position initiale du curseur au moment du clic.
+     *
+     * @param event événement souris
+     */
     @Override
     public void mousePressed(MouseEvent event) {
         lastX = event.getX();
         lastY = event.getY();
     }
 
+    /**
+     * Calcule le déplacement depuis le dernier point connu, l'ajuste selon le zoom
+     * courant
+     *
+     * @param event événement souris
+     */
     @Override
     public void mouseDragged(MouseEvent event) {
         if (event.getSource() instanceof PerspectiveView) {
@@ -52,6 +67,12 @@ public class MouseController extends MouseAdapter implements ViewController {
         }
     }
 
+    /**
+     * Convertit la rotation de la molette en delta de zoom
+     * Molette vers le haut → zoom avant (+0.1), vers le bas → zoom arrière (−0.1).
+     *
+     * @param event événement molette
+     */
     @Override
     public void mouseWheelMoved(MouseWheelEvent event) {
         if (event.getSource() instanceof PerspectiveView) {

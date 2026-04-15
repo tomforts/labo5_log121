@@ -7,8 +7,6 @@ import org.example.labo5.model.Perspective;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.*;
-
-
 /**
  * Gère le chargement et la sauvegarde des documents image.
  */

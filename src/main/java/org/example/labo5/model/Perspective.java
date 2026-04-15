@@ -1,7 +1,11 @@
 package org.example.labo5.model;
 
 import org.example.labo5.model.observer.Subject;
-
+/**
+ * Modèle d'une perspective sur une image : zoom, translation et rotation.
+ * Étend Subject pour notifier les vues à chaque modification.
+ * Supporte le patron Memento via PerspectiveMemento.
+ */
 public class Perspective extends Subject implements java.io.Serializable{
     private static final double MIN_ZOOM = 0.1;
 
@@ -16,10 +20,22 @@ public class Perspective extends Subject implements java.io.Serializable{
         this.offsetY = 0;
     }
 
+    /**
+     * Applique un delta au facteur de zoom courant.
+     *
+     * @param delta valeur ajoutée au zoom (peut être négative)
+     */
     public void zoom(double delta) {
         setZoomFactor(zoomFactor + delta);
     }
 
+    /**
+     * Translate l'image en tenant compte de l'angle de rotation courant.
+     * Sans effet si le zoom est ≤ 1.
+     *
+     * @param dx déplacement horizontal en pixels
+     * @param dy déplacement vertical en pixels
+     */
     public void translate(int dx, int dy) {
         if (zoomFactor <= 1.0) {
             return;
@@ -66,6 +82,7 @@ public class Perspective extends Subject implements java.io.Serializable{
         return offsetY;
     }
 
+    /** @return instantané de l'état courant */
     public PerspectiveMemento saveToMemento() {
         return new PerspectiveMemento(zoomFactor, offsetX, offsetY,angle);
     }

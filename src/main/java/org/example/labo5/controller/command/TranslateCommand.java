@@ -1,12 +1,19 @@
 package org.example.labo5.controller.command;
 
 import org.example.labo5.model.Perspective;
-
+/**
+ * Commande de translation d'une perspective.
+ */
 public class TranslateCommand extends PerspectiveCommand {
 
     private final int dx;
     private final int dy;
 
+    /**
+     * @param perspective perspective à déplacer
+     * @param dx          déplacement horizontal en pixels
+     * @param dy          déplacement vertical en pixels
+     */
     public TranslateCommand(Perspective perspective, int dx, int dy) {
         super(perspective);
         this.dx = dx;

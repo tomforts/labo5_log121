@@ -1,19 +1,22 @@
-package org.example.labo5;
+package org.example.labo5.view;
 
 import org.example.labo5.controller.MenuController;
 import org.example.labo5.controller.MouseController;
 import org.example.labo5.model.Image;
 import org.example.labo5.model.ImageDocument;
 import org.example.labo5.model.Perspective;
-import org.example.labo5.model.PerspectiveClipboard;
+import org.example.labo5.controller.PerspectiveClipboard;
 import org.example.labo5.controller.services.SaveFileManager;
-import org.example.labo5.view.ImageView;
-import org.example.labo5.view.PerspectiveView;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
-
+/**
+ * Fenêtre principale de l'application.
+ * Instancie les vues (ImageView, PerspectiveView),
+ * les contrôleurs (MenuController, MouseController)
+ * et le presse-papiers (PerspectiveClipboard).
+ */
 public class ImageViewerApp extends JFrame {
 
     private final JButton loadImageButton;
@@ -98,6 +101,9 @@ public class ImageViewerApp extends JFrame {
         rotateButton2.addActionListener(e -> menuController.onRotate(1));
     }
 
+    /**
+     * Crée un panneau titré servant de conteneur à une vue image.
+     */
     private JPanel createImageContainer(String title) {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBackground(Color.WHITE);
@@ -117,12 +123,19 @@ public class ImageViewerApp extends JFrame {
         return label;
     }
 
+    /**
+     * Installe l'état vide dans les trois panneaux (aucun document chargé).
+     */
     private void installEmptyState() {
         setPanelContent(imagePanel, createPlaceholderLabel("Aucune image"));
         setPanelContent(perspective1Panel, createPlaceholderLabel("Perspective 1 vide"));
         setPanelContent(perspective2Panel, createPlaceholderLabel("Perspective 2 vide"));
     }
 
+    /**
+     * Remplace le contenu d'un panneau par un nouveau composant,
+     * puis force le rafraîchissement de la mise en page.
+     */
     private void setPanelContent(JPanel panel, JComponent component) {
         panel.removeAll();
         panel.add(component, BorderLayout.CENTER);
@@ -196,6 +209,11 @@ public class ImageViewerApp extends JFrame {
         }
     }
 
+    /**
+     * Sauvegarde le document courant sur le disque.
+     * Affiche un avertissement si aucun document n'est chargé,
+     * une confirmation en cas de succès, ou une erreur en cas d'échec.
+     */
     private void saveImageDocument() {
         if (menuController.getImageDocument() == null) {
             JOptionPane.showMessageDialog(this,
@@ -217,6 +235,7 @@ public class ImageViewerApp extends JFrame {
         }
     }
 
+    /** Point d'entrée de l'application. */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(ImageViewerApp::new);
     }

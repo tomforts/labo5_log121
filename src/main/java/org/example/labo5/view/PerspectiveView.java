@@ -2,7 +2,7 @@ package org.example.labo5.view;
 
 import org.example.labo5.model.Image;
 import org.example.labo5.model.Perspective;
-import org.example.labo5.model.PerspectiveClipboard;
+import org.example.labo5.controller.PerspectiveClipboard;
 import org.example.labo5.model.observer.Observer;
 import org.example.labo5.model.observer.Subject;
 import org.example.labo5.controller.strategy.*;
@@ -15,7 +15,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-
+/**
+ * Vue d'une perspective : applique zoom, translation et rotation à l'image source.
+ * Observe à la fois Image et Perspective.
+ * Expose un menu contextuel de copier/coller de paramètres PerspectiveClipboard.
+ */
 public class PerspectiveView extends JPanel implements Observer {
     private final Image image;
     private final Perspective perspective;
@@ -44,6 +48,11 @@ public class PerspectiveView extends JPanel implements Observer {
         return perspective;
     }
 
+    /**
+     * Reçoit les notifications du modèle Image et déclenche un rafraîchissement de la vue.
+     *
+     * @param subject le sujet qui a changé d'état
+     */
     @Override
     public void update(Subject subject) {
         repaint();
@@ -121,6 +130,10 @@ public class PerspectiveView extends JPanel implements Observer {
         return popup;
     }
 
+    /**
+     * Enregistre un listener souris pour afficher le menu contextuel
+     * sur clic droit.
+     */
     private void registerPopupListener() {
         addMouseListener(new MouseAdapter() {
             @Override
@@ -135,13 +148,21 @@ public class PerspectiveView extends JPanel implements Observer {
         });
     }
 
+    /**
+     * Affiche le menu contextuel si l'événement correspond au déclencheur
+     * natif du système (ex. clic droit).
+     *
+     * @param e événement souris à évaluer
+     */
     private void showPopupIfNeeded(MouseEvent e) {
         if (e.isPopupTrigger()) {
             popupMenu.show(e.getComponent(), e.getX(), e.getY());
         }
     }
     /**
-     * Dessine la vue de la perspective.
+     * Dessine la vue de la perspective
+     *
+     * @param graphics contexte graphique fourni par Swing
      */
     @Override
     protected void paintComponent(Graphics graphics) {

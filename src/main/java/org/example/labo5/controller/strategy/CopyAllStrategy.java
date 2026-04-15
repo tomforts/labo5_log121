@@ -1,8 +1,11 @@
 package org.example.labo5.controller.strategy;
 
 import org.example.labo5.model.Perspective;
-import org.example.labo5.model.PerspectiveClipboard;
-
+import org.example.labo5.controller.PerspectiveClipboard;
+/**
+ * Stratégie copiant zoom, translation et rotation.
+ * Le collage applique les trois paramètres à la perspective cible.
+ */
 public class CopyAllStrategy implements CopyPasteStrategy {
 
     @Override

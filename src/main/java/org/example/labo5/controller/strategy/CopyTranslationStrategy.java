@@ -1,8 +1,10 @@
 package org.example.labo5.controller.strategy;
 
 import org.example.labo5.model.Perspective;
-import org.example.labo5.model.PerspectiveClipboard;
-
+import org.example.labo5.controller.PerspectiveClipboard;
+/**
+ * Stratégie copiant uniquement les décalages de translation (offsetX, offsetY).
+ */
 public class CopyTranslationStrategy implements CopyPasteStrategy {
 
     @Override

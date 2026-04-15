@@ -7,7 +7,10 @@ import org.example.labo5.model.Image;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-
+/**
+ * Vue de l'image originale, sans transformation.
+ * Observe Image et se redessine à chaque notification.
+ */
 public class ImageView extends JPanel implements Observer {
 
     private org.example.labo5.model.Image image;
@@ -20,11 +23,21 @@ public class ImageView extends JPanel implements Observer {
         }
     }
 
+    /**
+     * Reçoit les notifications du modèle Image et déclenche un rafraîchissement de la vue.
+     *
+     * @param subject le sujet qui a changé d'état
+     */
     @Override
     public void update(Subject subject) {
         repaint();
     }
 
+    /**
+     * Dessine l'image centrée et redimensionnée proportionnellement dans le panneau.
+     *
+     * @param graphics contexte graphique fourni par Swing
+     */
     @Override
     protected void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);

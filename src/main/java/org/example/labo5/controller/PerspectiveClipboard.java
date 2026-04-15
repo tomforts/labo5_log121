@@ -1,7 +1,6 @@
-package org.example.labo5.model;
+package org.example.labo5.controller;
 
 import org.example.labo5.controller.strategy.CopyPasteStrategy;
-
 /**
  * Représente un presse-papiers pour une perspective.
  *
@@ -22,6 +21,15 @@ public class PerspectiveClipboard {
         return hasContent;
     }
 
+    /**
+     * Enregistre un état de perspective dans le presse-papiers.
+     *
+     * @param zoomFactor facteur de zoom à stocker
+     * @param offsetX    décalage horizontal à stocker
+     * @param offsetY    décalage vertical à stocker
+     * @param angle      angle de rotation à stocker
+     * @param strategy   stratégie à appliquer lors du collage
+     */
     public void setContent(Double zoomFactor, Integer offsetX, Integer offsetY, Integer angle,CopyPasteStrategy strategy) {
         this.zoomFactor = zoomFactor;
         this.offsetX = offsetX;
