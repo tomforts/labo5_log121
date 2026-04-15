@@ -1,4 +1,4 @@
-package org.example.labo5.view;
+package org.example.labo5;
 
 import org.example.labo5.controller.MenuController;
 import org.example.labo5.controller.MouseController;
@@ -7,6 +7,8 @@ import org.example.labo5.model.ImageDocument;
 import org.example.labo5.model.Perspective;
 import org.example.labo5.controller.PerspectiveClipboard;
 import org.example.labo5.controller.services.SaveFileManager;
+import org.example.labo5.view.ImageView;
+import org.example.labo5.view.PerspectiveView;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
